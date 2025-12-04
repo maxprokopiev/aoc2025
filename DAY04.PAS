@@ -13,6 +13,7 @@ var
   count: integer;
   r: integer;
   cl: integer;
+  oans: integer;
 
 begin
   assign(f, ParamStr(1));
@@ -20,8 +21,7 @@ begin
 
   i := 1;
   j := 1;
-  ans := 0;
-  c := #0;
+  oans := 0;
 
   while not eof(f) do
   begin
@@ -45,36 +45,43 @@ begin
   r := 137;
   cl := 137;
 
-  for i := 1 to r do
-  begin
-    for j := 1 to cl do
+  repeat
+    ans := 0;
+    for i := 1 to r do
     begin
-      if grid[i, j] = true then
+      for j := 1 to cl do
       begin
-        count := 0;
-        if (i > 1) and (grid[i - 1, j] = true) then
-	  Inc(count);
-	if (i > 1) and (j > 1) and (grid[i - 1, j - 1] = true) then
-	  Inc(count);
-	if (i > 1) and (j < cl) and (grid[i - 1, j + 1] = true) then
-	  Inc(count);
-	if (j > 1) and (grid[i, j - 1] = true) then
-	  Inc(count);
-	if (j < cl) and (grid[i, j + 1] = true) then
-	  Inc(count);
-        if (i < r) and (grid[i + 1, j] = true) then
-	  Inc(count);
-	if (i < r) and (j > 1) and (grid[i + 1, j - 1] = true) then
-	  Inc(count);
-	if (i < r) and (j < cl) and (grid[i + 1, j + 1] = true) then
-	  Inc(count);
-	if count < 4 then
-	  Inc(ans);
+        if grid[i, j] = true then
+        begin
+          count := 0;
+          if (i > 1) and (grid[i - 1, j] = true) then
+            Inc(count);
+          if (i > 1) and (j > 1) and (grid[i - 1, j - 1] = true) then
+            Inc(count);
+          if (i > 1) and (j < cl) and (grid[i - 1, j + 1] = true) then
+            Inc(count);
+          if (j > 1) and (grid[i, j - 1] = true) then
+            Inc(count);
+          if (j < cl) and (grid[i, j + 1] = true) then
+            Inc(count);
+          if (i < r) and (grid[i + 1, j] = true) then
+            Inc(count);
+          if (i < r) and (j > 1) and (grid[i + 1, j - 1] = true) then
+            Inc(count);
+          if (i < r) and (j < cl) and (grid[i + 1, j + 1] = true) then
+            Inc(count);
+          if count < 4 then
+          begin
+            grid[i, j] := false;
+            Inc(ans);
+          end;
+        end;
       end;
     end;
-  end;
+    Inc(oans, ans);
+  until ans = 0;
 
-  writeln('done - ', ans);
+  writeln('done - ', oans);
   readln;
 end.
 
