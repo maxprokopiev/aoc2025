@@ -1,15 +1,15 @@
-lines = File.open("input06.txt").read
+lines = File.open("sample06.txt").read
 n = []; o = []; lines.each_line { |l| n << l.scan(/\d+|\+|\*/) }; o = n.pop;
 
-puts n.inspect
-ans = o.reduce([0, 0]) do |(acc, i), op|
-  puts i
-  if op == "+"
-    r = [acc + n.length.times.reduce(0) { |sum, idx| sum + n[idx][i].to_i }, i + 1]
-  elsif op == "*"
-    r = [acc + n.length.times.reduce(1) { |sum, idx| sum * n[idx][i].to_i }, i + 1]
-  end
-  r
+def transpose(a)
+  a[0].length.times.map { |i| a.map { |e| e[i] } }
 end
 
-puts ans[0]
+def solve(n, o)
+  o.reduce([0, 0]) { |(acc, i), op| [acc + n[i].map(&:to_i).reduce(op.to_sym), i + 1] }[0]
+end
+
+puts solve(transpose(n), o)
+
+n = transpose(lines.each_line.to_a).map(&:join).map(&:to_i).join(",").split(",0,").map { |l| l.split(",") }
+puts solve(n, o)
